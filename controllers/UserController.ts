@@ -61,6 +61,56 @@ class UserController{
               }
          
    }
+
+   public static async follow(req:Request,res:Response){
+       if (req.params.id!=req.body.userId){
+         try {
+            const user=await User.findById(req.params.id);
+            const currentUser=await User.findById(req.body.userId);
+            if (!user?.followers.includes(currentUser?.id)){
+               await user?.updateOne({$push:{followers:req.body.userId}});
+               await currentUser?.updateOne({$push:{followings:req.params.id}});
+               res.status(200).json({'msg':'Kullanıcıyı takip etme başarılı'})
+            }
+            else{
+               res.status(403).json({'msg':'Bu kullanıcıyı zaten takip ediyorsun'})
+            }
+
+         } catch (error) {
+            res.status(500).json(error)
+         }
+       }
+      
+   }
+
+
+   public static async unfollow(req:authRequest,res:Response){
+      if (req.body.userId!=req.params.id){
+         try {
+            const user=await User.findById(req.params.id);
+            const currentuser=await User.findById(req.body.userId);
+            if (user?.followers.includes(currentuser?.id)){
+               await user?.updateOne({$pull:{followers:req.body.userId}})
+               await currentuser?.updateOne({$pull:{followings:req.params.id}});
+               res.status(200).json({'msg':'Kullanıcıyı takipten çıktınız'})
+            }
+   
+            else{
+               res.status(403).json({'msg':'Bu kullanıcıyı takip etmiyorsunuz'})
+            }
+         } catch (error) {
+            res.status(500).json(error)
+         }
+
+         
+      }
+
+   
+      
+   }
+
+
+ 
 }
 
 export default UserController;

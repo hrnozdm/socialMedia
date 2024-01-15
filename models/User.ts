@@ -31,7 +31,7 @@ const UserSchema=new mongoose.Schema({
     type:Array,
     default:[],
   },
-  following:{
+  followings:{
     type:Array,
     default:[],    
   },
@@ -54,8 +54,9 @@ const UserSchema=new mongoose.Schema({
   relationship:{
       type:Number,
       enum:[1,2,3]
-  }
-})
+  },
+
+},{timestamps:true})
 
 
 export default mongoose.model('User',UserSchema);
