@@ -13,6 +13,9 @@ router.delete('/user/:id',UserController.deleteUser)
 router.get('/user/:id',UserController.getUser)
 router.put('/user/follow/:id',UserController.follow)
 router.put('/user/unfollow/:id',UserController.unfollow)
-router.get('/posts',PostController.createPost)
+router.post('/posts',PostController.createPost)
+router.put('/posts/:id',PostController.updatePost)
+router.delete('/posts/:id',PostController.deletePost)
+router.put('/posts/like/:id',PostController.likePost)
 export default router;
 
